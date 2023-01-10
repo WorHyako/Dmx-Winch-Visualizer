@@ -1,4 +1,4 @@
-﻿#include "Winchinfo.h"
+﻿#include "WinchInfo.h"
 
 WinchInfo::WinchInfo() noexcept
 {
@@ -10,10 +10,10 @@ WinchInfo::WinchInfo() noexcept
 
 uint8 WinchInfo::GetSelectedByte(WinchByte byteType) const noexcept
 {
-	return _dmxData[static_cast<int>(byteType)];
+	return _dmxData[byteType];
 }
 
-const TArray<uint8>& WinchInfo::GetDmxData() const noexcept
+const FWinchPacket& WinchInfo::GetDmxData() const noexcept
 {
 	return _dmxData;
 }
@@ -27,9 +27,9 @@ WinchObjectsTypes WinchInfo::GetWinchObjectsTypes() const noexcept
 
 #pragma region Mutators
 
-void WinchInfo::SetWinchIndex(int index) noexcept
+void WinchInfo::SetWinchIndex(int winchIndex) noexcept
 {
-	_winchIndex = index;
+	_winchIndex = winchIndex;
 }
 
 void WinchInfo::SetWinchType(WinchObjectsTypes winchType) noexcept
@@ -37,7 +37,7 @@ void WinchInfo::SetWinchType(WinchObjectsTypes winchType) noexcept
 	_winchType = winchType;
 }
 
-void WinchInfo::SetDmxData(TArray<uint8> dmxData) noexcept
+void WinchInfo::SetDmxData(FWinchPacket dmxData) noexcept
 {
 	_dmxData = MoveTemp(dmxData);
 }

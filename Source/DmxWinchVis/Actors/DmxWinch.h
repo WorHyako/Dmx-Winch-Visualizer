@@ -1,10 +1,14 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
+
+#include "../DMX/WinchInfo.h"
+#include "../DMX/WinchPacket.h"
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+
 #include "DmxWinch.generated.h"
+
+constexpr uint8 WinchLength = 17;
 
 UCLASS()
 class DMXWINCHVIS_API ADmxWinch : public AActor
@@ -16,20 +20,28 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	FVector2D objectMatrix;
-	
-	virtual void Tick(float DeltaTime) override;
-	
+
+	virtual void Tick(float deltaTime) override;
+
 protected:
 	virtual void BeginPlay() override;
+
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
+	bool DmxPortActivity;
+
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere);
+	float HawserLength;
 	
 	UPROPERTY(BlueprintReadWrite)
 	TArray<AActor*> actors;
-	
+
+	TArray<WinchInfo> winchInfo;
+
 	UPROPERTY(BlueprintReadWrite)
-	TArray<uint8> dmxValue;
+	TArray<FWinchPacket> DmxData;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	TArray<int> selectedUniverses;
+	TArray<uint8> selectedUniverses;
 
 private:
 	TArray<UStaticMesh*> _staticMeshes;

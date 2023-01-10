@@ -1,8 +1,6 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #include "DmxWinch.h"
-#include "DMX/Winchinfo.h"
-#include "DMX/DMXListenerMaster.h"
+#include "../DMX/WinchInfo.h"
+#include "../DMX/DmxListenerMaster.h"
 
 #include "Engine/StaticMeshActor.h"
 
@@ -10,15 +8,13 @@ ADmxWinch::ADmxWinch()
 {
 	PrimaryActorTick.bCanEverTick = true;
 	bRunConstructionScriptOnDrag = false;
+	bCollideWhenPlacing = false;
 	bReplicates = false;
 	bBlockInput = true;
 	bActorLabelEditable = false;
 
-	objectMatrix = {0, 0};
-	dmxValue.Reset(2048);
-	actors.Reset(200);
-	selectedUniverses.Reserve(4);
-
+	DmxPortActivity = false;
+	HawserLength = 17.f;
 	_staticMeshes.SetNum(5);
 	static ConstructorHelpers::FObjectFinder<UStaticMesh> ballMesh(TEXT("/Game/Meshes/Shape_Sphere"));
 	_staticMeshes[static_cast<int>(WinchObjectsTypes::Sphere)] = ballMesh.Succeeded() ? ballMesh.Object : nullptr;
@@ -31,8 +27,16 @@ ADmxWinch::ADmxWinch()
 
 void ADmxWinch::BeginPlay()
 {
-	auto& dmxMaster = DMXListenerMaster::GetInstance();
-	bool found = dmxMaster.FindPort(L"TestPort");
+	const int winchCount = objectMatrix.X * objectMatrix.Y;
+	DmxData.Reset(DmxListener::UniverseDataLength * 4);
+	actors.Reset(winchCount);
+	winchInfo.Reset(winchCount);
+	if (selectedUniverses.Num() == 0)
+	{
+		selectedUniverses.Reserve(4);
+	}
+	auto& dmxMaster = DmxListenerMaster::GetInstance();
+	DmxPortActivity = dmxMaster.FindPort(L"TestPort");
 
 	for (int i = 0; i < objectMatrix.X; i++)
 	{
@@ -62,28 +66,27 @@ void ADmxWinch::BeginPlay()
 	Super::BeginPlay();
 }
 
-void ADmxWinch::Tick(float DeltaTime)
+void ADmxWinch::Tick(float deltaTime)
 {
-	dmxValue.Empty(2048);
-	auto& dmxMaster = DMXListenerMaster::GetInstance();
+	DmxData.Empty(DmxListener::UniverseDataLength * selectedUniverses.Num());
+	auto& dmxMaster = DmxListenerMaster::GetInstance();
 	for (const auto& eachUniverse : selectedUniverses)
 	{
-		auto dataFromUniverse = dmxMaster.GetDataFromUniverse(eachUniverse);
+		auto dataFromUniverse = dmxMaster.GetPacketFromUniverse(eachUniverse);
 		if (dataFromUniverse.Num() > 0)
 		{
-			dmxValue.Append(dataFromUniverse);
+			DmxData.Append(MoveTemp(dataFromUniverse));
 		}
 	}
 
-	const int dmxCount = dmxValue.Num();
-	constexpr int packetLength = 10;
-	const int maxCount = dmxCount / packetLength;
-	for (int i = 0; i < maxCount; ++i)
+	const int actorsNum = actors.Num();
+	const int dmxDataNum = DmxData.Num();
+	for (uint16_t i = 0; i < actorsNum && i < dmxDataNum; ++i)
 	{
 		FVector newLocation = actors[i]->GetActorLocation();
-		newLocation.Z = dmxValue[6 + i * 10];
+		newLocation.Z = DmxData[i].Roll * HawserLength;
 		actors[i]->SetActorLocation(newLocation);
 	}
 
-	Super::Tick(DeltaTime);
+	Super::Tick(deltaTime);
 }

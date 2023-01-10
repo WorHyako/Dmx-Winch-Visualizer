@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "CoreMinimal.h"
+
 #include "WinchObjectsTypes.generated.h"
 
 UENUM(BlueprintType)
