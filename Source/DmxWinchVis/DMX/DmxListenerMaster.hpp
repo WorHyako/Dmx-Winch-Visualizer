@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "DmxListener.h"
+#include "DmxWinchVis/Dmx/DmxListener.hpp"
 
 class DmxListenerMaster final : protected DmxListener
 {

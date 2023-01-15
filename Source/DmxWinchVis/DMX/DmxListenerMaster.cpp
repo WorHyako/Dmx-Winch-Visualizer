@@ -1,4 +1,4 @@
-﻿#include "DmxListenerMaster.h"
+﻿#include "DmxListenerMaster.hpp"
 
 DmxListener& DmxListenerMaster::GetInstance()
 {

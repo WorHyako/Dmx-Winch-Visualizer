@@ -1,4 +1,4 @@
-﻿#include "DmxListener.h"
+﻿#include "DmxListener.hpp"
 
 #include "DMXProtocol/Public/IO/DMXInputPort.h"
 #include "DMXProtocol/Public/IO/DMXPortManager.h"

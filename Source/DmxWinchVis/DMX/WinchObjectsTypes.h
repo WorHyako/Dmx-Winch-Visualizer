@@ -2,8 +2,6 @@
 
 #include "CoreMinimal.h"
 
-#include "WinchObjectsTypes.generated.h"
-
 UENUM(BlueprintType)
 enum class WinchObjectsTypes : uint8
 {
@@ -12,4 +10,12 @@ enum class WinchObjectsTypes : uint8
 	StickVertical UMETA(DisplayName="StickVertical"),
 	Mirror UMETA(DisplayName="Mirror"),
 	Sphere UMETA(DisplayName="Sphere"),
+};
+
+UENUM(BlueprintType)
+enum class WinchObjectOrder : uint8
+{
+	First UMETA(DisplayName="First"),
+	Second UMETA(DisplayName="Second"),
+	Third UMETA(DisplayName="Third"),
 };

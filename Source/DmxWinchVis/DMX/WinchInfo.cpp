@@ -1,4 +1,4 @@
-﻿#include "WinchInfo.h"
+﻿#include "WinchInfo.hpp"
 
 WinchInfo::WinchInfo() noexcept
 {

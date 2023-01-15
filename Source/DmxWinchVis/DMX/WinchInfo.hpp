@@ -2,8 +2,8 @@
 
 #include "CoreMinimal.h"
 
-#include "WinchObjectsTypes.h"
-#include "WinchPacket.h"
+#include "DmxWinchVis/Dmx/WinchObjectsTypes.h"
+#include "DmxWinchVis/Dmx/WinchPacket.h"
 
 struct WinchInfo
 {
@@ -15,7 +15,7 @@ private:
 	FWinchPacket _dmxData;
 
 	WinchObjectsTypes _winchType;
-
+	
 public:
 #pragma region Accessors
 
