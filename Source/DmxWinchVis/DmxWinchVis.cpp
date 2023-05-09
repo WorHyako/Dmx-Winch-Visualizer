@@ -3,4 +3,4 @@
 #include "DmxWinchVis.h"
 #include "Modules/ModuleManager.h"
 
-IMPLEMENT_PRIMARY_GAME_MODULE( FDefaultGameModuleImpl, DmxWinchVis, "DmxWinchVis" );
+IMPLEMENT_PRIMARY_GAME_MODULE(FDefaultGameModuleImpl, DmxWinchVis, "DmxWinchVis");

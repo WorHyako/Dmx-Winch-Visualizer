@@ -10,5 +10,4 @@ UCLASS()
 class DMXWINCHVIS_API ADmxWinchVisGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
-	
 };
