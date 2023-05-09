@@ -55,7 +55,6 @@ const FString& DmxListener::GetCurrentPortName() const noexcept
 TArray<uint8_t> DmxListener::GetDataFromUniverse(int universe) const noexcept
 {
 	TArray<uint8> data;
-	data.Reserve(UniverseDataLength);
 	_dmxSubsystem->GetDMXDataFromInputPort(_inputPortRef, data, universe < 0 ? 0 : universe);
 	return data;
 }
@@ -69,7 +68,7 @@ TArray<FWinchPacket> DmxListener::GetPacketFromUniverse(int universe) const noex
 	dataViaPacket.Reserve(UniversalPacketCount);
 	_dmxSubsystem->GetDMXDataFromInputPort(_inputPortRef, data, universe < 0 ? 0 : universe);
 
-	if (data.Num() < 1)
+	if (data.Num() > 1)
 	{
 		FWinchPacket packet;
 		for (uint8_t packetCount = 0; packetCount < UniversalPacketCount; ++packetCount)

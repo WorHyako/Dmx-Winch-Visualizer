@@ -15,20 +15,20 @@ enum class WinchByte : uint8
 
 	Blue UMETA(DisplayName="Blue"),
 
-	/// maybe unused
-	// White UMETA(DisplayName="White"),
+	// maybe unused
+	White UMETA(DisplayName="White"),
 
 	/// maybe unused
-	// Strob UMETA(DisplayName="Strob"),
+	Strob UMETA(DisplayName="Strob"),
 
 	Roll UMETA(DisplayName="Roll"),
 
 	/// maybe unused
-	// RollFine UMETA(DisplayName="RollFine"),
+	RollFine UMETA(DisplayName="RollFine"),
 
 	Speed UMETA(DisplayName="Speed"),
 
-	Ctrl UMETA(DisplayName="Ctrl"),
+	Ctrl UMETA(DisplayName="Ctrl")
 };
 
 USTRUCT(BlueprintType)

@@ -5,17 +5,26 @@
 #include "DmxWinchVis/Dmx/WinchObjectsTypes.h"
 #include "DmxWinchVis/Dmx/WinchPacket.h"
 
-struct WinchInfo
+#include "WinchInfo.generated.h"
+
+USTRUCT(BlueprintType)
+struct FWinchInfo
 {
-	WinchInfo() noexcept;
+	GENERATED_BODY()
+
+	FWinchInfo() noexcept;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	int Chanel;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	int Universe;
 
 private:
-	int _winchIndex;
-
-	FWinchPacket _dmxData;
-
 	WinchObjectsTypes _winchType;
-	
+
+	WinchObjectOrder _winchOrder;
+
 public:
 #pragma region Accessors
 
@@ -28,8 +37,6 @@ public:
 #pragma endregion Accessors
 
 #pragma region Mutators
-
-	void SetWinchIndex(int winchIndex) noexcept;
 
 	void SetWinchType(WinchObjectsTypes winchType) noexcept;
 

@@ -394,6 +394,10 @@
 		{
 			"Name": "ActorSequence",
 			"Enabled": false
+		},
+		{
+			"Name": "DMXPixelMapping",
+			"Enabled": true
 		}
 	]
 }

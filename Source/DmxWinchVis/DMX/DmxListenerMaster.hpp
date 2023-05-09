@@ -16,7 +16,7 @@ public:
 #pragma endregion Accessors
 
 protected:
-	~DmxListenerMaster() final = default;
+	~DmxListenerMaster() override = default;
 
 	DmxListenerMaster() = default;
 };

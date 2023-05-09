@@ -20,8 +20,7 @@ public:
 
 	static constexpr uint16_t UniverseDataLength = 512;
 
-	static constexpr uint8_t UniversalPacketCount =
-		(UniverseDataLength - UniverseDataLength % 100) / FWinchPacket::WinchPacketLength;
+	static constexpr uint8_t UniversalPacketCount = UniverseDataLength / FWinchPacket::WinchPacketLength;
 
 protected:
 	DmxListener();

@@ -1,24 +1,16 @@
-﻿#include "WinchInfo.hpp"
+﻿#include "WinchInfo.h"
 
-WinchInfo::WinchInfo() noexcept
+FWinchInfo::FWinchInfo() noexcept
 {
 	_winchType = WinchObjectsTypes::None;
-	_winchIndex = 0;
+	_winchOrder = WinchObjectOrder::First;
+	Chanel = 0;
+	Universe = -1;
 }
 
 #pragma region Accessors
 
-uint8 WinchInfo::GetSelectedByte(WinchByte byteType) const noexcept
-{
-	return _dmxData[byteType];
-}
-
-const FWinchPacket& WinchInfo::GetDmxData() const noexcept
-{
-	return _dmxData;
-}
-
-WinchObjectsTypes WinchInfo::GetWinchObjectsTypes() const noexcept
+WinchObjectsTypes FWinchInfo::GetWinchObjectsTypes() const noexcept
 {
 	return _winchType;
 }
@@ -27,19 +19,9 @@ WinchObjectsTypes WinchInfo::GetWinchObjectsTypes() const noexcept
 
 #pragma region Mutators
 
-void WinchInfo::SetWinchIndex(int winchIndex) noexcept
-{
-	_winchIndex = winchIndex;
-}
-
-void WinchInfo::SetWinchType(WinchObjectsTypes winchType) noexcept
+void FWinchInfo::SetWinchType(WinchObjectsTypes winchType) noexcept
 {
 	_winchType = winchType;
-}
-
-void WinchInfo::SetDmxData(FWinchPacket dmxData) noexcept
-{
-	_dmxData = MoveTemp(dmxData);
 }
 
 #pragma endregion Mutators

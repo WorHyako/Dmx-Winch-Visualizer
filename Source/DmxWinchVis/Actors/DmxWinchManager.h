@@ -1,13 +1,11 @@
 #pragma once
 
-#include "DmxWinchVis/DMX/WinchInfo.hpp"
-#include "DmxWinchVis//DMX/WinchPacket.h"
 #include "DmxWinchVis/Actors/WinchStaticMeshActor.h"
 
+#include "Materials/MaterialLayersFunctions.h"
+#include "Materials/MaterialInstance.h"
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-
-#include <vector>
 
 #include "DmxWinchManager.generated.h"
 
@@ -20,34 +18,35 @@ class DMXWINCHVIS_API ADmxWinchManager final : public AActor
 
 public:
 	ADmxWinchManager();
-`
+
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	FVector2D ObjectMatrix;
 
-	void Tick(float deltaTime) final;
+	void Tick(float deltaTime) override;
 
 	UFUNCTION(BlueprintCallable)
 	void ConfigureWinchObject();
 
+	virtual void PostEditChangeChainProperty(FPropertyChangedChainEvent& PropertyChangedEvent) override;
+
 protected:
-	void BeginPlay() final;
+	void BeginPlay() override;
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
 	bool DmxPortActivity;
 
-	UPROPERTY(BlueprintReadWrite, VisibleAnywhere);
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
 	float HawserLength;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	WinchObjectsTypes UnionMeshType;
 	
-	UPROPERTY(BlueprintReadWrite)
+	UMaterial* winchMatInst;
+
 	TArray<AWinchStaticMeshActor*> Actors;
 
-	std::vector<WinchInfo> winchInfo;
-
-	UPROPERTY(BlueprintReadWrite)
-	TArray<FWinchPacket> DmxData;
+	TArray<TArray<uint8>> DmxData;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TArray<uint8> SelectedUniverses;
-
-private:
 };

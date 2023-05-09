@@ -4,43 +4,34 @@ AWinchStaticMeshActor::AWinchStaticMeshActor():
 	type{WinchObjectsTypes::Sphere},
 	staticMesh{nullptr}
 {
-	ConfigureActor(type);
-}
+	auto* meshComponent = GetStaticMeshComponent();
+	meshComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	meshComponent->SetIsReplicated(false);
+	meshComponent->SetSimulatePhysics(false);
+	meshComponent->SetCastShadow(false);
+	PrimaryActorTick.bCanEverTick = true;
+	bRunConstructionScriptOnDrag = false;
+	bCollideWhenPlacing = false;
+	bReplicates = false;
+	bBlockInput = true;
+	bActorLabelEditable = false;
 
-UStaticMesh* AWinchStaticMeshActor::GetWinchStaticMesh(WinchObjectsTypes meshType) noexcept
-{
-	UStaticMesh* staticMesh = nullptr;
-	switch (meshType)
-	{
-	case WinchObjectsTypes::None:
-		return staticMesh;
-	case WinchObjectsTypes::StickHorizontal:
-	case WinchObjectsTypes::StickVertical:
-		{
-			static ConstructorHelpers::FObjectFinder<UStaticMesh> stickMesh(TEXT("/Game/Meshes/Stick"));
-			staticMesh = stickMesh.Succeeded() ? stickMesh.Object : nullptr;
-			return staticMesh;
-		}
-	case WinchObjectsTypes::Mirror:
-		{
-			static ConstructorHelpers::FObjectFinder<UStaticMesh> mirrorMesh(TEXT("/Game/Meshes/Mirror"));
-			staticMesh = mirrorMesh.Succeeded() ? mirrorMesh.Object : nullptr;
-			return staticMesh;
-		}
-	case WinchObjectsTypes::Sphere:
-		{
-			static ConstructorHelpers::FObjectFinder<UStaticMesh> ballMesh(TEXT("/Game/Meshes/Sphere"));
-			staticMesh = ballMesh.Succeeded() ? ballMesh.Object : nullptr;
-			return staticMesh;
-		}
-	default:
-		return nullptr;
-	}
+	allStaticMeshes.SetNum(5);
+	static ConstructorHelpers::FObjectFinder<UStaticMesh> ballMesh(L"/Game/Meshes/SphereOld");
+	allStaticMeshes[static_cast<int>(WinchObjectsTypes::Sphere)] =
+		ballMesh.Succeeded() ? ballMesh.Object : nullptr;
+	static ConstructorHelpers::FObjectFinder<UStaticMesh> stickVerticalMesh(L"/Game/Meshes/StickVertical");
+	allStaticMeshes[static_cast<int>(WinchObjectsTypes::StickVertical)] =
+		stickVerticalMesh.Succeeded() ? stickVerticalMesh.Object : nullptr;
+	static ConstructorHelpers::FObjectFinder<UStaticMesh> mirrorMesh(L"/Game/Meshes/Mirror");
+	allStaticMeshes[static_cast<int>(WinchObjectsTypes::Mirror)] =
+		mirrorMesh.Succeeded() ? mirrorMesh.Object : nullptr;
+	ConfigureActor(type);
 }
 
 void AWinchStaticMeshActor::ConfigureActor(WinchObjectsTypes meshType)
 {
-	staticMesh = GetWinchStaticMesh(meshType);
+	staticMesh = allStaticMeshes[static_cast<int>(meshType)];
 	GetStaticMeshComponent()->SetStaticMesh(staticMesh);
 	SetMobility(EComponentMobility::Movable);
 	SetReplicates(false);
